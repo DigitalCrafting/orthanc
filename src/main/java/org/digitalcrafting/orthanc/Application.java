@@ -1,8 +1,6 @@
 package org.digitalcrafting.orthanc;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,7 +20,7 @@ public class Application {
     public static void main(String[] args) throws IOException {
         int port = 8080;
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-        server.createContext("/api/hello", (exchange) -> {
+        HttpContext context = server.createContext("/api/hello", (exchange) -> {
             if (HttpMethod.GET.equals(exchange.getRequestMethod())) {
                 Map<String, List<String>> params = parseRequestParams(exchange.getRequestURI().getRawQuery());
                 String noNameText = "Anonymous";
@@ -38,6 +36,13 @@ public class Application {
                 exchange.sendResponseHeaders(405, -1);
             }
         });
+        context.setAuthenticator(new BasicAuthenticator("myrealm") {
+            @Override
+            public boolean checkCredentials(String user, String pwd) {
+                return user.equals("admin") && pwd.equals("admin");
+            }
+        });
+
         server.createContext("/api/test", (exchange -> {
             String resp = "Test!";
             exchange.sendResponseHeaders(200, resp.getBytes(StandardCharsets.UTF_8).length);
