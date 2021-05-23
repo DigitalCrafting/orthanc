@@ -3,13 +3,18 @@
     <version>0.0.1-SNAPSHOT</version>
     <groupId>org.digitalcrafting.orthanc</groupId>
     <artifactId>orthanc</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
+
+    <modules>
+        <module>orthanc-core</module>
+        <module>test-app</module>
+    </modules>
 
     <dependencies>
         <dependency>

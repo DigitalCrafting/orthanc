@@ -1,4 +1,4 @@
-package org.digitalcrafting.orthanc;
+package org.digitalcrafting.orthanc.core;
 
 public final class HttpMethod {
     public static final String GET = "GET";
